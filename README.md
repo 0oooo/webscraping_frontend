@@ -22,3 +22,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Eslint configuration
+https://eslint.org/docs/user-guide/configuring#configuration-file-formats
+Restart server after changing configuration
+# webscraping_frontend
