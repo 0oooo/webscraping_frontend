@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import Movie from './Movie';
+import Movie from '../Movie';
 import axios from 'axios';
-const today_endpoint = 'http://localhost:3000/movies?today=true';
+const today_endpoint = 'http://localhost:3000/movies?';
 const limit = 12;
 
 function getTodaysMovies(component, page) {

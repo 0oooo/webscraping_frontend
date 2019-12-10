@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="vue">Vue movie</div>
+    <ScreeningList v-bind:screenings="screenings"></ScreeningList>
     <div class="cineworld">Cineworld</div>
     <div class="movie">
       <img :src=movie.image_url />
@@ -15,14 +16,14 @@
 
 <script>
 import axios from 'axios';
+import ScreeningList from '../ScreeningList';
+
 const movie_id_endpoint = 'http://localhost:3000/movies/';
+const screening_endpoint = 'http://localhost:3000/screenings';
 
 function getMovieById(component, id) {
   axios.get(movie_id_endpoint + id )
     .then(function(response) {
-
-      console.log(response);
-
       component.movie = response.data.data.pop()
     })
     .catch((error) => {
@@ -30,15 +31,31 @@ function getMovieById(component, id) {
     });
 }
 
+function getScreeningByMovieIdAndCompany(component, movie_id, company){
+  console.log(screening_endpoint + '?movie=' + movie_id + '&company=' + company);
+  axios.get(screening_endpoint + '?movie=' + movie_id + '&company=' + company)
+  .then(function(response){
+    component.screenings = response.data.data;
+  })
+  .catch((error) => {
+    console.error('Error! Could not reach the API. ' + error);
+  });
+}
+
 export default {
 
   data: () => ({
-      movie:{}
+      movie:{},
+      screenings:[]
   }),
+  components:{
+    ScreeningList
+  },
   methods: {  },
   // https://router.vuejs.org/guide/essentials/dynamic-matching.html#reacting-to-params-changes
   created: function() {
     getMovieById(this, this.$route.params.id);
+    getScreeningByMovieIdAndCompany(this, this.$route.params.id, 'Vue');
   }
 }
 </script>

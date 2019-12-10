@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import SearchBar from './SearchBar.vue'
-import SearchResult from './SearchResult.vue'
+import SearchBar from '../SearchBar.vue'
+import SearchResult from '../SearchResult.vue'
 export default {
   components: {
     SearchBar,

@@ -14,7 +14,7 @@ export default {
   props: ["image", "title","id"],
   data: () => {
     return {
-      movie_url: "movie/hello"
+      movie_url: ""
     }
   },
   created: function() {

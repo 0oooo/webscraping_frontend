@@ -11,27 +11,15 @@
 
 <script>
 
-import uuid from 'uuid';
+import routes from '../routes'
+
+const links = routes.filter((route) => {
+  return !route.hidden;
+})
 
 export default {
   data: () => ({
-      links: [
-        {
-          id: uuid(),
-          name: 'Search',
-          path: "/search"
-        },
-        {
-          id: uuid(),
-          name: 'Today',
-          path: "/today"
-        },
-        {
-          id: uuid(),
-          name: 'All Movies',
-          path: "/all"
-        }
-      ]
+      links
   }),
 }
 </script>
