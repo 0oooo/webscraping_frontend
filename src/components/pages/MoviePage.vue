@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <div class="vue">Vue movie</div>
-    <ScreeningList v-bind:screenings="screenings"></ScreeningList>
-    <div class="cineworld">Cineworld</div>
+    <ScreeningList class="vue" v-bind:screenings="screenings.Vue"></ScreeningList>
+    <ScreeningList class="cineworld" v-bind:screenings="screenings.Cineworld"></ScreeningList>
     <div class="movie">
       <img :src=movie.image_url />
       <h2 >{{movie.movie_name.replace(/_/g, ' ').toUpperCase()}}</h2>
@@ -31,22 +30,38 @@ function getMovieById(component, id) {
     });
 }
 
-function getScreeningByMovieIdAndCompany(component, movie_id, company){
-  console.log(screening_endpoint + '?movie=' + movie_id + '&company=' + company);
-  axios.get(screening_endpoint + '?movie=' + movie_id + '&company=' + company)
+function getScreeningByMovieId(component, movie_id){
+
+  axios.get(screening_endpoint + '?movie=' + movie_id)
   .then(function(response){
-    component.screenings = response.data.data;
+    const splitScreenings = splitScreeningsByCompany(response.data.data);
+    component.screenings.Vue = splitScreenings.Vue;
+    component.screenings.Cineworld = splitScreenings.Cineworld;
   })
   .catch((error) => {
     console.error('Error! Could not reach the API. ' + error);
   });
 }
 
+function splitScreeningsByCompany(screenings){
+  const result = {};
+  screenings.forEach(screening => {
+      if(!result[screening.company_name]){
+        result[screening.company_name] = [];
+      }
+      result[screening.company_name].push(screening);
+  });
+  return result;
+}
+
 export default {
 
   data: () => ({
       movie:{},
-      screenings:[]
+      screenings:{
+        "Vue": [],
+        "Cineworld": []
+      } // Expected: {"Vue": [{screening}, ...], "Cineworld": [{screening}, ...]}
   }),
   components:{
     ScreeningList
@@ -55,7 +70,8 @@ export default {
   // https://router.vuejs.org/guide/essentials/dynamic-matching.html#reacting-to-params-changes
   created: function() {
     getMovieById(this, this.$route.params.id);
-    getScreeningByMovieIdAndCompany(this, this.$route.params.id, 'Vue');
+    getScreeningByMovieId(this, this.$route.params.id);
+    console.log("In Vue: ", this.screenings.Vue);
   }
 }
 </script>
