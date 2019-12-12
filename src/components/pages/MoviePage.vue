@@ -35,8 +35,19 @@ function getScreeningByMovieId(component, movie_id){
   axios.get(screening_endpoint + '?movie=' + movie_id)
   .then(function(response){
     const splitScreenings = splitScreeningsByCompany(response.data.data);
-    component.screenings.Vue = splitScreenings.Vue;
-    component.screenings.Cineworld = splitScreenings.Cineworld;
+
+    const vueScreeningsByVenue = splitByVenue(splitScreenings.Vue);
+    Object.keys(vueScreeningsByVenue).map(key => {
+       vueScreeningsByVenue[key] = splitByDate(vueScreeningsByVenue[key]);
+    });
+
+    const cineworldScreeningsByVenue = splitByVenue(splitScreenings.Cineworld);
+    Object.keys(cineworldScreeningsByVenue).map(key => {
+       cineworldScreeningsByVenue[key] = splitByDate(cineworldScreeningsByVenue[key]);
+    });
+
+    component.screenings.Vue = vueScreeningsByVenue;
+    component.screenings.Cineworld = cineworldScreeningsByVenue;
   })
   .catch((error) => {
     console.error('Error! Could not reach the API. ' + error);
@@ -50,6 +61,33 @@ function splitScreeningsByCompany(screenings){
         result[screening.company_name] = [];
       }
       result[screening.company_name].push(screening);
+  });
+  return result;
+}
+
+function splitByVenue(screenings){
+  const result = {};
+  console.log("Split by venue")
+  screenings.forEach(screening => {
+    if(!result[screening.cinema_name]){
+      result[screening.cinema_name] = [];
+    }
+    result[screening.cinema_name].push(screening);
+    });
+    return result;
+}
+
+function splitByDate(screenings){
+  const result = {};
+  screenings.forEach(screening => {
+    const date = new Date(screening.screening_datetime); // returns Thu Dec 05 2019 14:50:00 GMT+0000 (Greenwich Mean Time)
+    const dateString = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    //const timeString = date.getHour() + ":" + date.getMinutes();
+
+    if(!result[dateString]){
+      result[dateString] = [];
+    }
+    result[dateString].push(screening);
   });
   return result;
 }

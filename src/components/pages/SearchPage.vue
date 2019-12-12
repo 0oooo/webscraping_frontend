@@ -1,27 +1,41 @@
 <template>
   <div>
-    <SearchBar v-bind:callback="handleSearch"/>
-    <SearchResult v-bind:query="result"></SearchResult>
+    <SearchBar :callback="handleSearch"/>
+    <SearchResult :results="result"></SearchResult>
   </div>
 </template>
 
 <script>
 import SearchBar from '../SearchBar.vue'
 import SearchResult from '../SearchResult.vue'
+import axios from 'axios';
+
+const movie_endpoint = 'http://localhost:3000/movies?page=1&limit=12&search=';
+
+
 export default {
   components: {
     SearchBar,
     SearchResult
   },
-  data() {
-    return {
-      result: "",
-      title: "My title"
-    };
-  },
+  data: () => ({
+    result: []
+  }),
   methods: {
     handleSearch(value) {
-      this.result = value
+      const _this = this;
+      axios.get(movie_endpoint + value)
+      .then(function(response){
+        const movies = response.data.data.map((movie) => {
+          const newMovie = {
+            id: movie.id,
+            title: movie.movie_name.replace(/_/g, ' ').toUpperCase(),
+            image: movie.image_url
+          }
+          return newMovie;
+        });
+        _this.result = movies;
+      })
     }
   }
 }
