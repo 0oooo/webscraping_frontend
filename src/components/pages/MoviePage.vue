@@ -1,7 +1,14 @@
 <template>
   <div class="container">
-    <ScreeningList class="vue" v-bind:screenings="screenings.Vue"></ScreeningList>
-    <ScreeningList class="cineworld" v-bind:screenings="screenings.Cineworld"></ScreeningList>
+    <div class="vue">
+      <img class="cinemaLogo" alt="Vue cinema" src="../../assets/vue-cinema.png">
+      <ScreeningList class="vue" v-bind:screenings="screenings.Vue"></ScreeningList>
+    </div>
+    <div class="cineworld">
+      <img class="cinemaLogo" alt="Cineworld cinema" src="../../assets/cineworld_02.png">
+      <ScreeningList class="cineworld" v-bind:screenings="screenings.Cineworld"></ScreeningList>
+    </div>
+
     <div class="movie">
       <img :src=movie.image_url />
       <h2 >{{movie.movie_name.replace(/_/g, ' ').toUpperCase()}}</h2>
@@ -119,7 +126,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 70px;
+  grid-column-gap: 30px;
   grid-row-gap: 20px;
 }
 
@@ -134,6 +141,14 @@ img {
 
 .container > * {
   color: #ff968b;
-  border: 1px solid blue;
+  border: 1px solid #f1f1f1;
+  border-radius:3px;
+  background-color: rgba(0,0,0, 0.4);
+  max-height: 550px;
+  overflow-y: scroll;
+}
+
+.cinemaLogo{
+  max-height: 100px;
 }
 </style>
