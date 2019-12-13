@@ -99,7 +99,7 @@ export default {
       screenings:{
         "Vue": [],
         "Cineworld": []
-      } // Expected: {"Vue": [{screening}, ...], "Cineworld": [{screening}, ...]}
+      } // Expected: {"Vue": ["12-12-2020": {screening}, ...], "Cineworld": [{screening}, ...]}
   }),
   components:{
     ScreeningList
@@ -109,7 +109,6 @@ export default {
   created: function() {
     getMovieById(this, this.$route.params.id);
     getScreeningByMovieId(this, this.$route.params.id);
-    console.log("In Vue: ", this.screenings.Vue);
   }
 }
 </script>

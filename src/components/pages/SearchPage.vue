@@ -1,7 +1,7 @@
 <template>
   <div>
-    <SearchBar :callback="handleSearch"/>
-    <SearchResult :results="result"></SearchResult>
+    <SearchBar class="search" :callback="handleSearch"/>
+    <SearchResult class="search" :results="result"></SearchResult>
   </div>
 </template>
 
@@ -42,5 +42,9 @@ export default {
 </script>
 
 <style scoped>
+
+.search{
+  float:left;
+}
 
 </style>

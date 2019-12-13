@@ -1,26 +1,18 @@
 <template>
   <div class="screeningList">
-    <ul>
-      <li v-for="(venueScreenings, venueName) in screenings" :key="venueName">
-            <h4>{{venueName}}</h4>
-            <ul>
-              <li v-for="(dateScreenings, date) in venueScreenings" :key="date">
-                <h5>{{date}}</h5>
-                <ul>
-                  <li v-for="(screening, index) in dateScreenings" :key="index">
-                    <a :href="screening.url">{{getTime(screening.screening_datetime)}}</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-        </li>
-    </ul>
+    <div v-for="(venueScreenings, venueName) in screenings" :key="venueName">
+      <h4>{{venueName}}</h4>
+      <div v-for="(dateScreenings, date) in venueScreenings" :key="date">
+        <h5>{{date}}</h5>
+        <div class="screening-block" v-for="(screening, index) in dateScreenings" :key="index">
+          <a :href="screening.url">{{getTime(screening.screening_datetime)}}</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-
-//todo:remove the old screenings
 
 
 export default {
@@ -43,4 +35,17 @@ export default {
 ul, li{
   list-style:none;
 }
+
+.screening-block{
+  border: 1px solid blue;
+  background-color: white;
+  display:inline-block;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+h4{
+
+}
+
 </style>
